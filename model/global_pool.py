@@ -120,7 +120,7 @@ class GlobalPool(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.maxpool = nn.AdaptiveMaxPool2d((1, 1))
         self.exp_pool = ExpPool()
-        self.pcampool = PcamPool()
+        # self.pcampool = PcamPool()
         self.linear_pool = LinearPool()
         self.lse_pool = LogSumExpPool(cfg.lse_gamma)
 
