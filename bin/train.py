@@ -30,7 +30,7 @@ from model.utils import get_optimizer  # noqa
 parser = argparse.ArgumentParser(description='Train model')
 parser.add_argument('cfg_path', default=None, metavar='CFG_PATH', type=str,
                     help="Path to the config file in yaml format")
-parser.add_argument('save_path', default=None, metavar='SAVE_PATH', type=str,
+parser.add_argument('--save_path', default=None, metavar='SAVE_PATH', type=str,
                     help="Path to the saved models")
 parser.add_argument('--num_workers', default=8, type=int, help="Number of "
                     "workers for each data loader")
