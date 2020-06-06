@@ -34,6 +34,8 @@ parser.add_argument('--save_path', default=None, metavar='SAVE_PATH', type=str,
                     help="Path to the saved models")
 parser.add_argument('--num_workers', default=8, type=int, help="Number of "
                     "workers for each data loader")
+parser.add_argument('--train_batch_size', default=None, type=int, help="if not passed "
+                    "the the train_batch_size form config file will be passed")
 parser.add_argument('--device_ids', default='0,1,2,3', type=str,
                     help="GPU indices ""comma separated, e.g. '0,1' ")
 parser.add_argument('--pre_train', default=None, type=str, help="If get"
@@ -273,6 +275,8 @@ def test_epoch(summary, cfg, args, model, dataloader):
 def run(args):
     with open(args.cfg_path) as f:
         cfg = edict(json.load(f))
+        if args.train_batch_size is not None:
+            cfg.train_batch_size = args.train_batch_size
         if args.verbose is True:
             print(json.dumps(cfg, indent=4))
 
