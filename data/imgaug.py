@@ -14,7 +14,7 @@ class ImgAugTransform:
             iaa.Sometimes(0.99,
                           iaa.GaussianBlur(sigma=(0, 1.0)),
                           iaa.ContrastNormalization((0.75, 1.5)),
-                          iaa.OneOf([iaa.Multiply((0.1, 0.5)),iaa.MultiplyElementwise((0.1, 0.5))])
+                          # iaa.OneOf([iaa.Multiply((0.1, 0.5)),iaa.MultiplyElementwise((0.1, 0.5))])
                          ),
             
             iaa.Sometimes(0.8, iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.1*255), per_channel=0.5)),
@@ -36,8 +36,7 @@ class ImgAugTransform:
         img = np.array(img)
         img = self.aug.augment_image(img)
 #         img = np.ascontiguousarray(res) # this fixes "some of the strides of a given numpy array are negative"
-        img = PIL.Image.fromarray(np.uint8(img)) # convert to pil image
-        print('imgaug Size:',img.size)
+        img = PIL.Image.fromarray(np.uint8(img))
         return img
 
 def Common(image):
