@@ -1,6 +1,44 @@
 import cv2
 import torchvision.transforms as tfs
+import imgaug
 
+# for imgaug
+import imgaug as ia
+from imgaug import augmenters as iaa
+import numpy as np
+import PIL
+
+class ImgAugTransform:
+    def __init__(self):
+        self.aug = iaa.Sequential([
+            iaa.Sometimes(0.99,
+                          iaa.GaussianBlur(sigma=(0, 1.0)),
+                          iaa.ContrastNormalization((0.75, 1.5)),
+                          iaa.OneOf([iaa.Multiply((0.1, 0.5)),iaa.MultiplyElementwise((0.1, 0.5))])
+                         ),
+            
+            iaa.Sometimes(0.8, iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.1*255), per_channel=0.5)),
+            
+            iaa.Sometimes(0.2,
+                          iaa.OneOf([iaa.Dropout(p=(0, 0.1)),
+                                     iaa.CoarseDropout((0.0, 0.1), size_percent=(0.01, 0.2))])),
+#             iaa.PiecewiseAffine(scale=(0.01, 0.05)), # takes lots of time
+#             iaa.AddToHueAndSaturation(value=(-10, 10), per_channel=True), # only for colored images
+            iaa.Sometimes(0.5, iaa.Affine(
+                scale={"x": (0.8, 1.2), "y": (0.8, 1.2)},
+                translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)},
+                rotate=(-20, 20),
+                shear=(-8, 8)
+            ))
+        ], random_order=False)
+      
+    def __call__(self, img):
+        img = np.array(img)
+        img = self.aug.augment_image(img)
+#         img = np.ascontiguousarray(res) # this fixes "some of the strides of a given numpy array are negative"
+        img = PIL.Image.fromarray(np.uint8(img)) # convert to pil image
+        print('imgaug Size:',img.size)
+        return img
 
 def Common(image):
 
@@ -19,7 +57,6 @@ def Aug(image):
 
     return image
 
-
 def GetTransforms(image, target=None, type='common'):
     # taget is not support now
     if target is not None:
@@ -34,6 +71,30 @@ def GetTransforms(image, target=None, type='common'):
     elif type.strip() == 'Aug':
         image = Aug(image)
         return image
+
+    elif type.strip() == 'imgaug_Low':
+        raise NotImplementedError
+
+    elif type.strip() == 'imgaug_High':
+        # look at their normalization
+        # maybe replace their data loader with std torch one
+
+        imgaugment = ImgAugTransform()
+
+        compose = tfs.Compose([
+#         transforms.RandomResizedCrop(224),
+#         transforms.Resize((35,20)),
+        tfs.RandomApply([imgaugment], p=0.7),
+
+        tfs.RandomHorizontalFlip(),
+        # transforms.ToTensor(),
+#         normalize,
+        ])
+        
+        image = compose(image)
+
+        return image
+
     else:
         raise Exception(
             'Unknown transforms_type : '.format(type))
