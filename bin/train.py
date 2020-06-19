@@ -38,6 +38,8 @@ parser.add_argument('--train_batch_size', default=None, type=int, help="if not p
                     "the the train_batch_size form config file will be passed")
 parser.add_argument('--device_ids', default='0,1,2,3', type=str,
                     help="GPU indices ""comma separated, e.g. '0,1' ")
+parser.add_argument('--use_transforms_type', default=None, type=str,
+                    help="None, Common(default), Aug, imgaug_Low, imgaug_Medium, imgaug_High")
 parser.add_argument('--pre_train', default=None, type=str, help="If get"
                     "parameters from pretrained model")
 parser.add_argument('--resume', default=0, type=int, help="If resume from "
@@ -277,6 +279,10 @@ def run(args):
         cfg = edict(json.load(f))
         if args.train_batch_size is not None:
             cfg.train_batch_size = args.train_batch_size
+
+        if args.use_transforms_type is not None:
+            cfg.use_transforms_type = args.use_transforms_type
+            
         if args.verbose is True:
             print(json.dumps(cfg, indent=4))
 
