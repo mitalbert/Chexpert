@@ -10,17 +10,19 @@ from model.attention_map import AttentionMap
 
 BACKBONES = {'vgg19': vgg19,
              'vgg19_bn': vgg19_bn,
-             'densenet121': densenet121,
-             'densenet169': densenet169,
-             'densenet201': densenet201,
+             'densenet121' : densenet121,
+             'densenet169' : densenet169,
+             'densenet201' : densenet201,
+             'mobilenet_v2': mobilenet_v2
              'inception_v3': inception_v3}
 
 
 BACKBONES_TYPES = {'vgg19': 'vgg',
                    'vgg19_bn': 'vgg',
-                   'densenet121': 'densenet',
-                   'densenet169': 'densenet',
-                   'densenet201': 'densenet',
+                   'densenet121' : 'densenet',
+                   'densenet169' : 'densenet',
+                   'densenet201' : 'densenet',
+                   'mobilenet_v2 : 'mobilenet'
                    'inception_v3': 'inception'}
 
 
@@ -77,6 +79,19 @@ class Classifier(nn.Module):
                         stride=1,
                         padding=0,
                         bias=True))
+
+           elif BACKBONES_TYPES[self.cfg.backbone] == 'mobilenet':
+                setattr(
+                    self,
+                    "fc_" + str(index),
+                    nn.Conv2d(
+                        self.backbone.features * self.expand,
+                        num_class,
+                        kernel_size=1,
+                        stride=1,
+                        padding=0,
+                        bias=True))
+
             else:
                 raise Exception(
                     'Unknown backbone type : {}'.format(self.cfg.backbone)
@@ -103,6 +118,16 @@ class Classifier(nn.Module):
             elif BACKBONES_TYPES[self.cfg.backbone] == 'inception':
                 setattr(self, "bn_" + str(index),
                         nn.BatchNorm2d(2048 * self.expand))
+
+            elif BACKBONES_TYPES[self.cfg.backbone] == 'mobilenet':
+                setattr(
+                    self,
+                    "bn_" +
+                    str(index),
+                    nn.BatchNorm2d(
+                        self.backbone.features *
+                        self.expand))
+
             else:
                 raise Exception(
                     'Unknown backbone type : {}'.format(self.cfg.backbone)
@@ -120,6 +145,14 @@ class Classifier(nn.Module):
                     self.backbone.num_features))
         elif BACKBONES_TYPES[self.cfg.backbone] == 'inception':
             setattr(self, "attention_map", AttentionMap(self.cfg, 2048))
+
+        elif BACKBONES_TYPES[self.cfg.backbone] == 'mobilenet':
+            setattr(
+                self,
+                "attention_map",
+                AttentionMap(
+                    self.cfg,
+                    self.backbone.features))
         else:
             raise Exception(
                 'Unknown backbone type : {}'.format(self.cfg.backbone)
