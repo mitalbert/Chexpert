@@ -23,7 +23,7 @@ BACKBONES_TYPES = {'vgg19': 'vgg',
                    'densenet121' : 'densenet',
                    'densenet169' : 'densenet',
                    'densenet201' : 'densenet',
-                   'mobilenet_v2 : 'mobilenet',
+                   'mobilenet_v2': 'mobilenet',
                    'inception_v3': 'inception'}
 
 
