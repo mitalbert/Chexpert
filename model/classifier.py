@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from model.backbone.vgg import (vgg19, vgg19_bn)
 from model.backbone.densenet import (densenet121, densenet169, densenet201)
 from model.backbone.inception import (inception_v3)
+from model.backbone.mobilenet import (mobilenet_v2)
 from model.global_pool import GlobalPool
 from model.attention_map import AttentionMap
 
@@ -13,7 +14,7 @@ BACKBONES = {'vgg19': vgg19,
              'densenet121' : densenet121,
              'densenet169' : densenet169,
              'densenet201' : densenet201,
-             'mobilenet_v2': mobilenet_v2
+             'mobilenet_v2': mobilenet_v2,
              'inception_v3': inception_v3}
 
 
@@ -22,7 +23,7 @@ BACKBONES_TYPES = {'vgg19': 'vgg',
                    'densenet121' : 'densenet',
                    'densenet169' : 'densenet',
                    'densenet201' : 'densenet',
-                   'mobilenet_v2 : 'mobilenet'
+                   'mobilenet_v2 : 'mobilenet',
                    'inception_v3': 'inception'}
 
 
