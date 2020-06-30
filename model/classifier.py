@@ -81,7 +81,7 @@ class Classifier(nn.Module):
                         padding=0,
                         bias=True))
 
-           elif BACKBONES_TYPES[self.cfg.backbone] == 'mobilenet':
+            elif BACKBONES_TYPES[self.cfg.backbone] == 'mobilenet':
                 setattr(
                     self,
                     "fc_" + str(index),
