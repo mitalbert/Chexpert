@@ -86,7 +86,7 @@ class Classifier(nn.Module):
                     self,
                     "fc_" + str(index),
                     nn.Conv2d(
-                        self.backbone.features * self.expand,
+                        self.backbone.last_channel * self.expand,
                         num_class,
                         kernel_size=1,
                         stride=1,
@@ -126,7 +126,7 @@ class Classifier(nn.Module):
                     "bn_" +
                     str(index),
                     nn.BatchNorm2d(
-                        self.backbone.features *
+                        self.backbone.last_channel *
                         self.expand))
 
             else:
@@ -153,7 +153,7 @@ class Classifier(nn.Module):
                 "attention_map",
                 AttentionMap(
                     self.cfg,
-                    self.backbone.features))
+                    self.backbone.last_channel))
         else:
             raise Exception(
                 'Unknown backbone type : {}'.format(self.cfg.backbone)
