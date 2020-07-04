@@ -74,5 +74,7 @@ class ImageDataset(Dataset):
             return (image, path)
         elif self._mode == 'heatmap':
             return (image, path, labels)
+        elif self._mode == 'mock':
+            return np.random.randn(3,512,512), labels
         else:
             raise Exception('Unknown mode : {}'.format(self._mode))
