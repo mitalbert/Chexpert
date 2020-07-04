@@ -2,6 +2,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
+try:
+    from torch.hub import load_state_dict_from_url
+except ImportError:
+    from model_zoo import load_url as load_state_dict_from_url
+
+
 from model.utils import get_norm
 
 
