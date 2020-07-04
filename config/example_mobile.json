@@ -10,7 +10,7 @@
     "pixel_std": 64.0,
     "use_pixel_std": true,
     "use_equalizeHist": true,
-    "use_transforms_type": "Aug",
+    "use_transforms_type": "imgaug_High",
     "gaussian_blur": 3,
     "border_pad": "pixel_mean",
     "num_classes": [1,1,1,1,1],
