@@ -1,3 +1,9 @@
+# The fork has been made in the scope of an academic project "Machine Learning in Medical Image Processing"
+
+Main contributions are complex augmentations and the MobileNet2.
+
+The json files were adapted for training on Google Colab, since it was the platform we trained the models.
+
 # Top1 Solution of CheXpert
 
 ## What is Chexpert?
